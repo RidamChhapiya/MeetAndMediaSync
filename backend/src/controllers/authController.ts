@@ -55,8 +55,8 @@ async function handleRefreshToken(req: Request, res: Response) {
 
             res.cookie("token", newToken, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production" ? false : true, // Change for localhost testing
-                sameSite: "lax", // Cross-origin requests need "lax" or "none"
+                secure: process.env.NODE_ENV === "production", // Change for localhost testing
+                sameSite: "none", // Cross-origin requests need "lax" or "none"
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
             return res.redirect(`${process.env.FRONTEND_URL}/dashboard/home`);
@@ -90,8 +90,8 @@ async function handleGoogleCallback(req: Request, res: Response) {
         if (result.token) {
             res.cookie("token", result.token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production" ? false : true, // Change for localhost testing
-                sameSite: "lax", // Cross-origin requests need "lax" or "none"
+                secure: process.env.NODE_ENV === "production", // Change for localhost testing
+                sameSite: "none", // Cross-origin requests need "lax" or "none"
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
         }
@@ -99,8 +99,8 @@ async function handleGoogleCallback(req: Request, res: Response) {
         if (result.refresh_token) {
             res.cookie("refreshToken", result.refresh_token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production" ? false : true, // Change for localhost testing
-                sameSite: "lax", // Cross-origin requests need "lax" or "none"
+                secure: process.env.NODE_ENV === "production", // Change for localhost testing
+                sameSite: "none", // Cross-origin requests need "lax" or "none"
                 maxAge: 30 * 24 * 60 * 60 * 1000,
             });
         }
@@ -135,8 +135,8 @@ async function refreshJwtToken(req: Request, res: Response) {
 
         res.cookie("token", newToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production" ? false : true, // Change for localhost testing
-            sameSite: "lax", // Cross-origin requests need "lax" or "none"
+            secure: process.env.NODE_ENV === "production", // Change for localhost testing
+            sameSite: "none", // Cross-origin requests need "lax" or "none"
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
