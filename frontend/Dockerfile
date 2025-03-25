@@ -1,25 +1,30 @@
-# Use Node.js 18 Alpine as base image
-FROM node:18-alpine 
+# Stage 1: Build React App
+FROM node:18-alpine AS builder
 
 # Set working directory
-WORKDIR /app 
+WORKDIR /app
 
 # Copy package.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install 
 
-# Copy the entire project
-COPY . . 
+# Copy the entire project and build
+COPY . .
+RUN npm run build
 
-# Build the React app
-RUN npm run build 
-
-# Use Nginx to serve the built frontend
+# Stage 2: Serve with Nginx
 FROM nginx:alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
 
-# Expose port 8080
+# Set the correct port for Cloud Run
+ENV PORT=8080
 EXPOSE 8080
+
+# Remove default Nginx config and use a custom one
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built React app from `dist/` to Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

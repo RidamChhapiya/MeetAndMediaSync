@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const handleLogOut = async () => {
     try {
-      await logout();
+      logout();
       navigate("/login"); // Redirect user to login page after logout
     } catch (error) {
       console.error("Logout Error:", error);
@@ -49,7 +49,7 @@ const Navbar = () => {
                       />
                     )}
                     <span className="text-lg font-semibold text-gray-800">
-                      {currentUser?.displayName || "Guest"}
+                      {currentUser?.displayName ?? "Guest"}
                     </span>
                   </button>
                 </DropdownMenuTrigger>
