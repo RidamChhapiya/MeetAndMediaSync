@@ -1,27 +1,25 @@
-# Use a lightweight Node.js image to build the React app
-FROM node:18-alpine AS builder
+# Use Node.js 18 Alpine as base image
+FROM node:18-alpine 
 
-# Set the working directory
-WORKDIR /app
+# Set working directory
+WORKDIR /app 
 
 # Copy package.json and install dependencies
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install 
 
-# Copy the rest of the application code
-COPY . .
+# Copy the entire project
+COPY . . 
 
 # Build the React app
-RUN npm run build
+RUN npm run build 
 
-# Use an NGINX image to serve the built frontend
+# Use Nginx to serve the built frontend
 FROM nginx:alpine
+COPY --from=0 /app/dist /usr/share/nginx/html
 
-# Copy the built files from the previous stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose port 8080 (Cloud Run requires 8080)
+# Expose port 8080
 EXPOSE 8080
 
-# Start NGINX
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
