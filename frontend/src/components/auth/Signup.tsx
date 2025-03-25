@@ -1,5 +1,5 @@
 import AuthNavbar from "../common/AuthNavbar";
-import SignupForm from "./signupForm";
+import SignupForm from "./SignupForm";
 
 const SignUp: React.FC = () => {
   return (
